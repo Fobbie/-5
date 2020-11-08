@@ -1,4 +1,5 @@
 from datetime import date
+from prettytable import PrettyTable
 # d = date(1969, 6, 26) - конструктор даты
 # d.year < 2020 - проверка даты
 
@@ -97,44 +98,10 @@ def _format_output(data: tuple) -> str:
     | значение строки  | значение колонки |
     Возвращает таблицу строкой.
     """
-    offset = 13
-
-
-    def max_length(data_tuple: tuple, field: str) -> int:
-        max_len = 0
-        if data_tuple:
-            max_len = max([len(item[field]) for item in data_tuple])
-
-        if not max_len < len(field):
-            return max_len
-        else:
-            return len(field)
-
-    maxlen_first_name = max_length(data, 'first_name')
-    maxlen_last_name = max_length(data, 'last_name')
-    maxlen_birth = 10
-    maxlen_email = max_length(data, 'email')
-
-    horizontal_line_len = maxlen_first_name + maxlen_last_name + maxlen_birth + maxlen_email + offset
-    horizontal_line = '-' * horizontal_line_len
-
-    table = horizontal_line
-    table += '\n'
-    table += f"| {'first_name':^{maxlen_first_name}} "
-    table += f"| {'last_name':^{maxlen_last_name}} "
-    table += f"| {'birth_name':^{maxlen_birth}} "
-    table += f"| {'email':^{maxlen_email}} |"
-    table += '\n'
-    table += horizontal_line
-
-    for row in data:
-        table += '\n'
-        table += f"| {row['first_name']:^{maxlen_first_name}} "
-        table += f"| {row['last_name']:^{maxlen_last_name}} "
-        table += f"| {str(row['birth']):^{maxlen_birth}} "
-        table += f"| {row['email']:^{maxlen_email}} |"
-        table += '\n'
-        table += horizontal_line
+    table = PrettyTable()
+    table.field_names = ['first_name', 'last_name', 'birth_name', 'email']
+    table.add_row(['Guido', 'Van Rosum', f'{date(1969, 6, 27)}', 'iamguido@python.org'])
+    table.add_row(['Guido', 'But Van Rossum', f'{date(1969, 6, 28)}', 'iamanotherguido@python.org'])
 
     return table
 
